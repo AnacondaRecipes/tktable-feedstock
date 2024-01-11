@@ -7,10 +7,11 @@ package:
 source:
   url: http://downloads.sourceforge.net/project/tktable/tktable/{{ version }}/Tktable{{ version }}.tar.gz
   sha256: c335117fa1be45fe4d3032e96fd4b4641fff6a4f8467878608dabed11198a4cb
+  patches:
+    - 0001-Remove-hardcoded-libs.patch
 
 build:
-  skip: True  # [win]
-  number: 0
+  number: 1
 
 requirements:
   build:
@@ -19,6 +20,7 @@ requirements:
     - {{ cdt('libx11-devel') }}          # [linux]
     - {{ cdt('libxcb') }}                # [linux]
     - {{ cdt('libxau') }}                # [linux]
+    - make                               # [linux]
   host:
     - tk
   run:
@@ -30,8 +32,8 @@ test:
     - echo "if {[catch {package require -exact Tktable {{ version }}; exit 0}]} {exit 1}" | tclsh  # [osx]
 
 about:
-  home: http://www.tcl.tk/
-  license: Tcl/Tk
+  home: https://www.tcl.tk/
+  license: TCL
   license_family: BSD
   summary: Tktable is a 2D editable table widget
   doc_url: https://core.tcl.tk/jenglish/gutter/packages/tktable.html
