@@ -1,14 +1,16 @@
+{% set name = "tktable" %}
 {% set version = "2.10" %}
 
 package:
-  name: tktable
+  name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: http://downloads.sourceforge.net/project/tktable/tktable/{{ version }}/Tktable{{ version }}.tar.gz
+  url: http://downloads.sourceforge.net/project/{{ name }}/{{ name }}/{{ version }}/Tktable{{ version }}.tar.gz
   sha256: c335117fa1be45fe4d3032e96fd4b4641fff6a4f8467878608dabed11198a4cb
-  #patches:
-  #  - 0001-Remove-hardcoded-libs.patch
+  patches:                              # [win]
+    # To fix an error "LINK : fatal error LNK1181: cannot open input file 'C:\build\tcl84-64\tclstub86.lib'"
+    - 0001-Remove-hardcoded-libs.patch  # [win]
 
 build:
   number: 1
@@ -21,8 +23,7 @@ requirements:
     - {{ cdt('libxcb') }}                # [linux]
     - {{ cdt('libxau') }}                # [linux]
     - make                               # [linux]
-    #- m2-patch                           # [win]
-    #- patch                              # [unix]
+    - m2-patch                           # [win]
   host:
     - tk
   run:
