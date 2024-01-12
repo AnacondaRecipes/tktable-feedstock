@@ -7,8 +7,8 @@ package:
 source:
   url: http://downloads.sourceforge.net/project/tktable/tktable/{{ version }}/Tktable{{ version }}.tar.gz
   sha256: c335117fa1be45fe4d3032e96fd4b4641fff6a4f8467878608dabed11198a4cb
-  patches:
-    - 0001-Remove-hardcoded-libs.patch
+  #patches:
+  #  - 0001-Remove-hardcoded-libs.patch
 
 build:
   number: 1
@@ -21,6 +21,8 @@ requirements:
     - {{ cdt('libxcb') }}                # [linux]
     - {{ cdt('libxau') }}                # [linux]
     - make                               # [linux]
+    #- m2-patch                           # [win]
+    #- patch                              # [unix]
   host:
     - tk
   run:
@@ -29,14 +31,21 @@ requirements:
 test:
   commands:
     - echo "if {[catch {package require -exact Tktable {{ version }}; exit 0}]} {exit 1}" | xvfb-run tclsh  # [linux]
-    - echo "if {[catch {package require -exact Tktable {{ version }}; exit 0}]} {exit 1}" | tclsh  # [osx]
+    - echo "if {[catch {package require -exact Tktable {{ version }}; exit 0}]} {exit 1}" | tclsh  # [not linux]
 
 about:
   home: https://www.tcl.tk/
   license: TCL
   license_family: BSD
+  license_file: license.txt
   summary: Tktable is a 2D editable table widget
-  doc_url: https://core.tcl.tk/jenglish/gutter/packages/tktable.html
+  description: |
+    TkTable is a full-featured 2D table widget for Tk.
+    It supports images, embedded windows, varying colors and fonts, and more.
+    Also here is Vu, a Tk widget extension that includes a pie, dial, spinbox and more,
+    and Tile, a themed widget set for Tk.
+  dev_url: https://sourceforge.net/projects/tktable/
+  doc_url: https://core.tcl-lang.org/jenglish/gutter/packages/tktable.html
 
 extra:
   recipe-maintainers:
