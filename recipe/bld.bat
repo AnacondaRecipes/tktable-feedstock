@@ -1,4 +1,4 @@
-@REM set MACHINE="AMD64"
+set MACHINE="AMD64"
 @REM :: A different SDK is needed when build with VS 2017 and 2015
 @REM :: http://wiki.tcl.tk/54819
 @REM if "%VS_MAJOR%"=="14" (
