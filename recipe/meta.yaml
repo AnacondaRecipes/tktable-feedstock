@@ -10,7 +10,7 @@ source:
   sha256: c335117fa1be45fe4d3032e96fd4b4641fff6a4f8467878608dabed11198a4cb
   patches:                              # [win]
     # To fix an error "LINK : fatal error LNK1181: cannot open input file 'C:\build\tcl84-64\tclstub86.lib'"
-    - 0001-Remove-hardcoded-libs.patch  # [win]
+    - 0001-Remove-hardcoded-libs_1.patch  # [win]
 
 build:
   number: 1
