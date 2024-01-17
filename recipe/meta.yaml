@@ -1,16 +1,19 @@
+{% set name = "tktable" %}
 {% set version = "2.10" %}
 
 package:
-  name: tktable
+  name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: http://downloads.sourceforge.net/project/tktable/tktable/{{ version }}/Tktable{{ version }}.tar.gz
+  url: http://downloads.sourceforge.net/project/{{ name }}/{{ name }}/{{ version }}/Tktable{{ version }}.tar.gz
   sha256: c335117fa1be45fe4d3032e96fd4b4641fff6a4f8467878608dabed11198a4cb
+  patches:                              # [win]
+    # To fix an error "LINK : fatal error LNK1181: cannot open input file 'C:\build\tcl84-64\tclstub86.lib'"
+    - 0001-Remove-hardcoded-libs_1.patch  # [win]
 
 build:
-  skip: True  # [win]
-  number: 0
+  number: 1
 
 requirements:
   build:
@@ -19,22 +22,32 @@ requirements:
     - {{ cdt('libx11-devel') }}          # [linux]
     - {{ cdt('libxcb') }}                # [linux]
     - {{ cdt('libxau') }}                # [linux]
+    - make                               # [linux]
+    - m2-patch                           # [win]
   host:
-    - tk
+    - tk {{ tk }}
   run:
     - tk
 
 test:
   commands:
     - echo "if {[catch {package require -exact Tktable {{ version }}; exit 0}]} {exit 1}" | xvfb-run tclsh  # [linux]
-    - echo "if {[catch {package require -exact Tktable {{ version }}; exit 0}]} {exit 1}" | tclsh  # [osx]
+    - echo "if {[catch {package require -exact Tktable {{ version }}; exit 0}]} {exit 1}" | tclsh           # [osx]
+    - echo if {[catch {package require -exact Tktable {{ version }}; exit 0}]} {exit 1} | tclsh             # [win]
 
 about:
-  home: http://www.tcl.tk/
-  license: Tcl/Tk
+  home: https://www.tcl.tk/
+  license: TCL
   license_family: BSD
+  license_file: license.txt
   summary: Tktable is a 2D editable table widget
-  doc_url: https://core.tcl.tk/jenglish/gutter/packages/tktable.html
+  description: |
+    TkTable is a full-featured 2D table widget for Tk.
+    It supports images, embedded windows, varying colors and fonts, and more.
+    Also here is Vu, a Tk widget extension that includes a pie, dial, spinbox and more,
+    and Tile, a themed widget set for Tk.
+  dev_url: https://sourceforge.net/projects/tktable/
+  doc_url: https://core.tcl-lang.org/jenglish/gutter/packages/tktable.html
 
 extra:
   recipe-maintainers:
