@@ -1,12 +1,13 @@
-ls -l
+set MACHINE="AMD64"
 
-autoreconf -fiv
+echo puts [info tclversion] | tclsh > tmpfile.tcl
+set /p TCL_VERSION=<tmpfile.tcl
+del tmpfile.tcl
+set TCL_VER=%TCL_VERSION:.=%
+echo %TCL_VERSION%
+echo %TCL_VER%
 
-mkdir "build"
-cd "build"
-
-../configure \
-	--prefix=${PREFIX}
-
-mingw32-make
-mingw32-make install
+pushd win
+mingw32-make -f makefile.vc libpath32="" CC=%CC% LD=link.exe TCL_VER=%TCL_VER% TCL_VERSION=%TCL_VERSION% DEST_DIR=%LIBRARY_PREFIX% MACHINE=%MACHINE% install
+if %ERRORLEVEL% GTR 0 exit 1
+popd
