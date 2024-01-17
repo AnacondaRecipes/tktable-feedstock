@@ -1,3 +1,5 @@
+ls -l
+
 autoreconf -fiv
 
 mkdir "build"
