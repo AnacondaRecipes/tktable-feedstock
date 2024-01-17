@@ -8,5 +8,5 @@ cd "build"
 ../configure \
 	--prefix=${PREFIX}
 
-nmake
-nmake install
+mingw32-make
+mingw32-make install
