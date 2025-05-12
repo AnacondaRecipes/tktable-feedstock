@@ -8,32 +8,33 @@ package:
 source:
   url: http://downloads.sourceforge.net/project/{{ name }}/{{ name }}/{{ version }}/Tktable{{ version }}.tar.gz
   sha256: c335117fa1be45fe4d3032e96fd4b4641fff6a4f8467878608dabed11198a4cb
-  patches:                              # [win]
+  patches:  # [win]
     # To fix an error "LINK : fatal error LNK1181: cannot open input file 'C:\build\tcl84-64\tclstub86.lib'"
     - 0001-Remove-hardcoded-libs_1.patch  # [win]
 
 build:
-  number: 1
+  number: 3
 
 requirements:
   build:
     - {{ compiler('c') }}
-    - {{ cdt('xorg-x11-proto-devel') }}  # [linux]
-    - {{ cdt('libx11-devel') }}          # [linux]
-    - {{ cdt('libxcb') }}                # [linux]
-    - {{ cdt('libxau') }}                # [linux]
-    - make                               # [linux]
-    - m2-patch                           # [win]
+    # TODO: map CDT libxau to new X11 package
+    # - { cdt('libxau') }
+    - make  # [linux]
+    - m2-patch  # [win]
   host:
     - tk {{ tk }}
+    - xorg-xproto
+    - xorg-libx11
+    - libxcb
   run:
     - tk
 
 test:
   commands:
     - echo "if {[catch {package require -exact Tktable {{ version }}; exit 0}]} {exit 1}" | xvfb-run tclsh  # [linux]
-    - echo "if {[catch {package require -exact Tktable {{ version }}; exit 0}]} {exit 1}" | tclsh           # [osx]
-    - echo if {[catch {package require -exact Tktable {{ version }}; exit 0}]} {exit 1} | tclsh             # [win]
+    - echo "if {[catch {package require -exact Tktable {{ version }}; exit 0}]} {exit 1}" | tclsh  # [osx]
+    - echo if {[catch {package require -exact Tktable {{ version }}; exit 0}]} {exit 1} | tclsh  # [win]
 
 about:
   home: https://www.tcl.tk/
