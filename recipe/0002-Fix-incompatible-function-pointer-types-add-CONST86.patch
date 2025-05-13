@@ -1,0 +1,128 @@
+From 517fa24afda62237bdb4d3de126769f40c853bfe Mon Sep 17 00:00:00 2001
+From: Marcel Bargull <marcel.bargull@udo.edu>
+Date: Sat, 22 Jun 2024 14:40:27 +0000
+Subject: [PATCH] Fix incompatible-function-pointer-types, add CONST86
+
+---
+ generic/tkTable.h     | 7 +++++--
+ generic/tkTableTag.c  | 4 ++--
+ generic/tkTableUtil.c | 8 ++++----
+ generic/tkTableWin.c  | 4 ++--
+ 4 files changed, 13 insertions(+), 10 deletions(-)
+
+diff --git a/generic/tkTable.h b/generic/tkTable.h
+index cfb83e7..827debb 100644
+--- a/generic/tkTable.h
++++ b/generic/tkTable.h
+@@ -40,6 +40,9 @@
+ #ifndef CONST84
+ #  define CONST84
+ #endif
++#ifndef CONST86
++# define CONST86 CONST84
++#endif
+ 
+ /* This EXTERN declaration is needed for Tcl < 8.0.3 */
+ #ifndef EXTERN
+@@ -526,7 +529,7 @@ extern void	Table_ClearHashTable(Tcl_HashTable *hashTblPtr);
+ extern int	TableOptionBdSet(ClientData clientData,
+ 			Tcl_Interp *interp, Tk_Window tkwin,
+ 			CONST84 char *value, char *widgRec, int offset);
+-extern char *	TableOptionBdGet(ClientData clientData,
++extern CONST86 char *	TableOptionBdGet(ClientData clientData,
+ 			Tk_Window tkwin, char *widgRec, int offset,
+ 			Tcl_FreeProc **freeProcPtr);
+ extern int	TableTagConfigureBd(Table *tablePtr,
+@@ -535,7 +538,7 @@ extern int	Cmd_OptionSet(ClientData clientData,
+ 			Tcl_Interp *interp,
+ 			Tk_Window unused, CONST84 char *value,
+ 			char *widgRec, int offset);
+-extern char *	Cmd_OptionGet(ClientData clientData,
++extern CONST86 char *	Cmd_OptionGet(ClientData clientData,
+ 			Tk_Window unused, char *widgRec,
+ 			int offset, Tcl_FreeProc **freeProcPtr);
+ 
+diff --git a/generic/tkTableTag.c b/generic/tkTableTag.c
+index 028984a..520eeed 100644
+--- a/generic/tkTableTag.c
++++ b/generic/tkTableTag.c
+@@ -22,7 +22,7 @@ static void	TableImageProc _ANSI_ARGS_((ClientData clientData, int x,
+ static int	TableOptionReliefSet _ANSI_ARGS_((ClientData clientData,
+ 			Tcl_Interp *interp, Tk_Window tkwin,
+ 			CONST84 char *value, char *widgRec, int offset));
+-static char *	TableOptionReliefGet _ANSI_ARGS_((ClientData clientData,
++static CONST86 char *	TableOptionReliefGet _ANSI_ARGS_((ClientData clientData,
+ 			Tk_Window tkwin, char *widgRec, int offset,
+ 			Tcl_FreeProc **freeProcPtr));
+ 
+@@ -1340,7 +1340,7 @@ TableOptionReliefSet(clientData, interp, tkwin, value, widgRec, offset)
+  *----------------------------------------------------------------------
+  */
+ 
+-static char *
++static CONST86 char *
+ TableOptionReliefGet(clientData, tkwin, widgRec, offset, freeProcPtr)
+     ClientData clientData;		/* Type of struct being set. */
+     Tk_Window tkwin;			/* Window containing canvas widget. */
+diff --git a/generic/tkTableUtil.c b/generic/tkTableUtil.c
+index 5e5e9d0..4587b75 100644
+--- a/generic/tkTableUtil.c
++++ b/generic/tkTableUtil.c
+@@ -13,7 +13,7 @@
+ 
+ #include "tkTable.h"
+ 
+-static char *	Cmd_GetName _ANSI_ARGS_((const Cmd_Struct *cmds, int val));
++static CONST86 char *	Cmd_GetName _ANSI_ARGS_((const Cmd_Struct *cmds, int val));
+ static int	Cmd_GetValue _ANSI_ARGS_((const Cmd_Struct *cmds,
+ 			const char *arg));
+ static void	Cmd_GetError _ANSI_ARGS_((Tcl_Interp *interp,
+@@ -169,7 +169,7 @@ TableOptionBdSet(clientData, interp, tkwin, value, widgRec, offset)
+  *----------------------------------------------------------------------
+  */
+ 
+-char *
++CONST86 char *
+ TableOptionBdGet(clientData, tkwin, widgRec, offset, freeProcPtr)
+     ClientData clientData;		/* Type of struct being set. */
+     Tk_Window tkwin;			/* Window containing canvas widget. */
+@@ -329,7 +329,7 @@ Cmd_OptionSet(ClientData clientData, Tcl_Interp *interp,
+  *----------------------------------------------------------------------
+  */
+ 
+-char *
++CONST86 char *
+ Cmd_OptionGet(ClientData clientData, Tk_Window unused,
+ 	      char *widgRec, int offset, Tcl_FreeProc **freeProcPtr)
+ {
+@@ -342,7 +342,7 @@ Cmd_OptionGet(ClientData clientData, Tk_Window unused,
+  * simple Cmd_Struct lookup functions
+  */
+ 
+-char *
++CONST86 char *
+ Cmd_GetName(const Cmd_Struct *cmds, int val)
+ {
+   for(;cmds->name && cmds->name[0];cmds++) {
+diff --git a/generic/tkTableWin.c b/generic/tkTableWin.c
+index 86e1c0c..40a1b27 100644
+--- a/generic/tkTableWin.c
++++ b/generic/tkTableWin.c
+@@ -17,7 +17,7 @@
+ static int	StickyParseProc _ANSI_ARGS_((ClientData clientData,
+ 			Tcl_Interp *interp, Tk_Window tkwin,
+ 			CONST84 char *value, char *widgRec, int offset));
+-static char *	StickyPrintProc _ANSI_ARGS_((ClientData clientData,
++static CONST86 char *	StickyPrintProc _ANSI_ARGS_((ClientData clientData,
+ 			Tk_Window tkwin, char *widgRec, int offset,
+ 			Tcl_FreeProc **freeProcPtr));
+ 
+@@ -117,7 +117,7 @@ static Tk_ConfigSpec winConfigSpecs[] = {
+  *
+  *----------------------------------------------------------------------
+  */
+-static char *
++static CONST86 char *
+ StickyPrintProc(clientData, tkwin, widgRec, offset, freeProcPtr)
+     ClientData clientData;		/* Ignored. */
+     Tk_Window tkwin;			/* Window for text widget. */

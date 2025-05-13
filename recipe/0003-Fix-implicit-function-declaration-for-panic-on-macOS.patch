@@ -1,0 +1,42 @@
+From d48690d6abda64efdb48aa91e7f960c237a94b49 Mon Sep 17 00:00:00 2001
+From: Marcel Bargull <marcel.bargull@udo.edu>
+Date: Sat, 22 Jun 2024 15:15:52 +0000
+Subject: [PATCH] Fix implicit-function-declaration for panic on macOS
+
+---
+ generic/tkTableTag.c  | 5 +++++
+ generic/tkTableUtil.c | 5 +++++
+ 2 files changed, 10 insertions(+)
+
+diff --git a/generic/tkTableTag.c b/generic/tkTableTag.c
+index 520eeed..5506394 100644
+--- a/generic/tkTableTag.c
++++ b/generic/tkTableTag.c
+@@ -13,6 +13,11 @@
+ 
+ #include "tkTable.h"
+ 
++#if defined(__APPLE__) && !defined(panic)
++/* On macOS, tcl.h does not #define panic Tcl_Panic. */
++# include <mach/mach.h>
++#endif
++
+ static TableTag *TableTagGetEntry _ANSI_ARGS_((Table *tablePtr, char *name,
+ 	int objc, CONST char **argv));
+ static unsigned int	TableTagGetPriority _ANSI_ARGS_((Table *tablePtr,
+diff --git a/generic/tkTableUtil.c b/generic/tkTableUtil.c
+index 4587b75..8627ce6 100644
+--- a/generic/tkTableUtil.c
++++ b/generic/tkTableUtil.c
+@@ -13,6 +13,11 @@
+ 
+ #include "tkTable.h"
+ 
++#if defined(__APPLE__) && !defined(panic)
++/* On macOS, tcl.h does not #define panic Tcl_Panic. */
++# include <mach/mach.h>
++#endif
++
+ static CONST86 char *	Cmd_GetName _ANSI_ARGS_((const Cmd_Struct *cmds, int val));
+ static int	Cmd_GetValue _ANSI_ARGS_((const Cmd_Struct *cmds,
+ 			const char *arg));
