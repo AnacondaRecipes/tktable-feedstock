@@ -13,19 +13,18 @@ source:
     - 0001-Remove-hardcoded-libs_1.patch  # [win]
 
 build:
-  number: 3
+  number: 2
 
 requirements:
   build:
     - {{ compiler('c') }}
-    # TODO: map CDT libxau to new X11 package
-    # - { cdt('libxau') }
     - make  # [linux]
     - m2-patch  # [win]
   host:
     - tk {{ tk }}
     - xorg-xproto
     - xorg-libx11
+    - xorg-libxau
     - libxcb
   run:
     - tk
