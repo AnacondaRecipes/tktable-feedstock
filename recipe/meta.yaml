@@ -24,10 +24,7 @@ requirements:
     - m2-patch  # [win]
   host:
     - tk {{ tk }}
-    - xorg-xorgproto  # [linux]
     - xorg-libx11  # [linux]
-    - xorg-libxau  # [linux]
-    - libxcb  # [linux]
   run:
     - tk
 
