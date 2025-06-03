@@ -21,6 +21,7 @@ requirements:
   build:
     - {{ compiler('c') }}
     - make  # [linux]
+    - patch     # [not win] 
     - m2-patch  # [win]
   host:
     - tk {{ tk }}
@@ -35,7 +36,7 @@ test:
     - echo if {[catch {package require -exact Tktable {{ version }}; exit 0}]} {exit 1} | tclsh  # [win]
 
 about:
-  home: https://www.tcl.tk/
+  home: https://www.tcl.tk
   license: TCL
   license_family: BSD
   license_file: license.txt
