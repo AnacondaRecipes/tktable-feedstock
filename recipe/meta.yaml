@@ -8,35 +8,35 @@ package:
 source:
   url: http://downloads.sourceforge.net/project/{{ name }}/{{ name }}/{{ version }}/Tktable{{ version }}.tar.gz
   sha256: c335117fa1be45fe4d3032e96fd4b4641fff6a4f8467878608dabed11198a4cb
-  patches:                              # [win]
+  patches:
     # To fix an error "LINK : fatal error LNK1181: cannot open input file 'C:\build\tcl84-64\tclstub86.lib'"
     - 0001-Remove-hardcoded-libs_1.patch  # [win]
+    - 0002-Fix-incompatible-function-pointer-types-add-CONST86.patch
+    - 0003-Fix-implicit-function-declaration-for-panic-on-macOS.patch  # [osx]
 
 build:
-  number: 1
+  number: 2
 
 requirements:
   build:
     - {{ compiler('c') }}
-    - {{ cdt('xorg-x11-proto-devel') }}  # [linux]
-    - {{ cdt('libx11-devel') }}          # [linux]
-    - {{ cdt('libxcb') }}                # [linux]
-    - {{ cdt('libxau') }}                # [linux]
-    - make                               # [linux]
-    - m2-patch                           # [win]
+    - make  # [linux]
+    - patch     # [not win] 
+    - m2-patch  # [win]
   host:
     - tk {{ tk }}
+    - xorg-libx11 {{ xorg_libx11 }}  # [linux]
   run:
     - tk
 
 test:
   commands:
     - echo "if {[catch {package require -exact Tktable {{ version }}; exit 0}]} {exit 1}" | xvfb-run tclsh  # [linux]
-    - echo "if {[catch {package require -exact Tktable {{ version }}; exit 0}]} {exit 1}" | tclsh           # [osx]
-    - echo if {[catch {package require -exact Tktable {{ version }}; exit 0}]} {exit 1} | tclsh             # [win]
+    - echo "if {[catch {package require -exact Tktable {{ version }}; exit 0}]} {exit 1}" | tclsh  # [osx]
+    - echo if {[catch {package require -exact Tktable {{ version }}; exit 0}]} {exit 1} | tclsh  # [win]
 
 about:
-  home: https://www.tcl.tk/
+  home: https://www.tcl.tk
   license: TCL
   license_family: BSD
   license_file: license.txt
