@@ -15,14 +15,13 @@ source:
     - 0003-Fix-implicit-function-declaration-for-panic-on-macOS.patch  # [osx]
 
 build:
-  number: 2
+  number: 3
 
 requirements:
   build:
     - {{ compiler('c') }}
     - make  # [linux]
     - patch     # [not win] 
-    - m2-patch  # [win]
   host:
     - tk {{ tk }}
     - xorg-libx11 {{ xorg_libx11 }}  # [linux]
