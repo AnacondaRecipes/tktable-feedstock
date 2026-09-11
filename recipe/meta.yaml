@@ -19,9 +19,9 @@ build:
 
 requirements:
   build:
+    - {{ stdlib('c') }}
     - {{ compiler('c') }}
     - make  # [linux]
-    - patch     # [not win] 
   host:
     - tk {{ tk }}
     - xorg-libx11 {{ xorg_libx11 }}  # [linux]
