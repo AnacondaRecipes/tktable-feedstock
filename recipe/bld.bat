@@ -1,4 +1,8 @@
-set MACHINE="AMD64"
+if "%target_platform%"=="win-arm64" (
+  set MACHINE="ARM64"
+) else (
+  set MACHINE="AMD64"
+)
 
 echo puts [info tclversion] | tclsh > tmpfile.tcl
 set /p TCL_VERSION=<tmpfile.tcl

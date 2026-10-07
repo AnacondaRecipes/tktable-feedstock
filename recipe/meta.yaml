@@ -15,7 +15,7 @@ source:
     - 0003-Fix-implicit-function-declaration-for-panic-on-macOS.patch  # [osx]
 
 build:
-  number: 3
+  number: 4
 
 requirements:
   build:
